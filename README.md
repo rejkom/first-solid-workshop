@@ -23,11 +23,11 @@ first-solid-workshop/
 ├── .gitignore                       # Pliki ignorowane przez Git
 ├── src/
 │   ├── main/java/                   # Kod produkcyjny
-│   │   └── pl/pg/qa/workshop/
+│   │   └── edu/pg/qa/workshop/
 │   │       └── calculator/
 │   │           └── Calculator.java  # Prosta klasa kalkulatora
 │   └── test/java/                   # Testy
-│       └── pl/pg/qa/workshop/
+│       └── edu/pg/qa/workshop/
 │           └── calculator/
 │               ├── CalculatorBadTest.java   # Antywzorce (do analizy)
 │               └── CalculatorGoodTest.java  # Wzorce FIRST
