@@ -2,23 +2,20 @@ package edu.pg.qa.workshop.order;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Testy koszyka zakupowego- WERSJA ZE WSPÓŁDZIELONYM STANEM
+ * Testy koszyka zakupowego-WERSJA Z NIEZALEŻNYMI TESTAMI
  * <p>
- * PROBLEM: Wszystkie testy używają tego samego obiektu 'cart'.
- * Testy są ZALEŻNE od kolejności wykonania!
- * <p>
- * Spróbuj uruchomić testy w losowej kolejności- mogą się posypać.
+ * ROZWIĄZANIE: Każdy test tworzy własny obiekt 'cart'.
+ * Testy są całkowicie NIEZALEŻNE-można je uruchomić w dowolnej kolejności!
  */
 class ShoppingCartTest {
 
-    // ❌ PROBLEM: Współdzielony stan między testami!
-    private static final ShoppingCart cart = new ShoppingCart();
-
     @Test
-    void test1_shouldAddFirstItem() {
-        // Given
+    void shouldAddSingleItemToEmptyCart() {
+        // Given-każdy test tworzy własny koszyk! ✅
+        ShoppingCart cart = new ShoppingCart();
         String item = "Laptop";
 
         // When
@@ -26,41 +23,58 @@ class ShoppingCartTest {
 
         // Then
         assertEquals(1, cart.getItemCount());
+        assertTrue(cart.getItems().contains("Laptop"));
     }
 
     @Test
-    void test2_shouldAddSecondItem() {
-        // Given
-        String item = "Mouse";
+    void shouldAddMultipleItems() {
+        // Given-własny, czysty koszyk ✅
+        ShoppingCart cart = new ShoppingCart();
 
         // When
-        cart.addItem(item);
+        cart.addItem("Mouse");
+        cart.addItem("Keyboard");
 
         // Then
-        // ❌ Ten test zakłada, że test1 został już wykonany!
         assertEquals(2, cart.getItemCount());
     }
 
     @Test
-    void test3_shouldRemoveItem() {
-        // Given- zakładamy, że w koszyku są już 2 produkty
-        String item = "Laptop";
+    void shouldRemoveExistingItem() {
+        // Given-przygotowujemy koszyk z produktami ✅
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItem("Laptop");
+        cart.addItem("Mouse");
 
         // When
-        cart.removeItem(item);
+        cart.removeItem("Laptop");
 
         // Then
-        // ❌ Ten test zakłada, że test1 i test2 zostały już wykonane!
         assertEquals(1, cart.getItemCount());
+        assertTrue(cart.getItems().contains("Mouse"));
     }
 
     @Test
-    void test4_shouldClearCart() {
+    void shouldClearCartWithMultipleItems() {
+        // Given-własny koszyk z danymi testowymi ✅
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItem("Item1");
+        cart.addItem("Item2");
+        cart.addItem("Item3");
+
         // When
         cart.clear();
 
         // Then
-        // ❌ Ten test zakłada, że poprzednie testy zostały wykonane!
+        assertEquals(0, cart.getItemCount());
+    }
+
+    @Test
+    void shouldStartWithEmptyCart() {
+        // Given-nowy, pusty koszyk ✅
+        ShoppingCart cart = new ShoppingCart();
+
+        // Then
         assertEquals(0, cart.getItemCount());
     }
 
