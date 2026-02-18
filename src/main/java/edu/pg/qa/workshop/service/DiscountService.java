@@ -3,18 +3,17 @@ package edu.pg.qa.workshop.service;
 import java.time.LocalDate;
 
 /**
- * Serwis obliczający rabaty zależne od daty.
+ * Serwis obliczający rabaty zależne od daty- WERSJA DETERMINISTYCZNA.
+ * Przyjmuje datę jako parametr, zamiast używać LocalDate.now().
  */
 public class DiscountService {
 
     /**
-     * Oblicza rabat- wyższy w weekendy.
-     * PROBLEM: Używa aktualnej daty systemowej!
+     * Oblicza rabat na podstawie podanej daty.
+     * ✅ Teraz data jest kontrolowana przez wywołującego (w tym testy)!
      */
-    public double calculateWeekendDiscount(double orderTotal) {
-        LocalDate today = LocalDate.now(); // ❌ Niedeterministyczne!
-
-        int dayOfWeek = today.getDayOfWeek().getValue();
+    public double calculateWeekendDiscount(double orderTotal, LocalDate date) {
+        int dayOfWeek = date.getDayOfWeek().getValue();
 
         // Weekend (sobota=6, niedziela=7)
         if (dayOfWeek >= 6) {
