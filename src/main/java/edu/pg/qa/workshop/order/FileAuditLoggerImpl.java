@@ -6,17 +6,18 @@ import java.io.PrintWriter;
 import java.time.Instant;
 
 /**
- * Niskopoziomowy logger audytu – zapisuje zdarzenia do pliku.
- * Normalnie nie chcemy go dotykać w testach jednostkowych.
+ * Szczegółowa implementacja oparta o plik.
+ * Zależy od abstrakcji AuditLogger.
  */
-public class FileAuditLogger {
+public class FileAuditLoggerImpl implements AuditLogger {
 
     private final String filePath;
 
-    public FileAuditLogger(String filePath) {
+    public FileAuditLoggerImpl(String filePath) {
         this.filePath = filePath;
     }
 
+    @Override
     public void log(String eventType, String details) {
         try (PrintWriter out = new PrintWriter(new FileWriter(filePath, true))) {
             out.printf("%s | %s | %s%n", Instant.now(), eventType, details);
